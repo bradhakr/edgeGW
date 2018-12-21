@@ -20,3 +20,5 @@ d. For healthcheck:
 e. Volume folder is added to presist the changes, so that next time when you start the gateway all your policies/proxies, configurations, plug-ins are sustained. Make sure you have the relevant access for the same. 
 
 f. Extra host is added to accomodate any additional external integrations, like SSO, Portal, AdvAuth or APM.  
+
+g. SSO agent is enabled by default to accomodate Siteminder integration and relevant host information needs to be amended in the yaml. 
