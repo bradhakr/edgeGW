@@ -1,0 +1,53 @@
+services: 
+  api-gateway: 
+    cpus: 2
+    extra_hosts:
+      - "mgw.bala.apim.ca.com:172.31.50.13"
+      - "sso.caapim.com:172.31.58.8"
+    environment: 
+      ACCEPT_LICENSE: "true"
+      HOSTNAME: "mgw.bala.apim.ca.com"
+      EXTRA_JAVA_ARGS: "-XX:ParallelGCThreads=4 -Dcom.l7tech.bootstrap.autoTrustSslKey=trustAnchor,TrustedFor.SSL,TrustedFor.SAML_ISSUER, -Dcom.l7tech.server.siteminder.enabled=true"
+      SSG_ADMIN_PASSWORD: "7layer"
+      SSG_ADMIN_USERNAME: "admin"
+      SSG_CLUSTER_HOST: "mgw.bala.apim.ca.com"
+      SSG_CLUSTER_PASSWORD: "7layer"
+      #SSG_DATABASE_ADMIN_PASS: "7layer"
+      #SSG_DATABASE_ADMIN_USER: "root"
+      SSG_DATABASE_HOST: "mysql-server"
+      SSG_DATABASE_JDBC_URL: "jdbc:mysql://mysql-server:3306/ssg"
+      SSG_DATABASE_NAME: "ssg"
+      SSG_DATABASE_PASSWORD: "7layer"
+      SSG_DATABASE_PORT: "3306"
+      SSG_DATABASE_USER: "root"
+      SSG_INTERNAL_SERVICES: "restman wsman"
+      SSG_JVM_HEAP: 4g
+      #SSG_LICENSE:  ./license.xml
+      SSG_LICENSE: "$SSG_LICENSE_ENV"
+      #EXTRA_JAVA_ARGS: "-Dcom.l7tech.bootstrap.env.license.enable=true"  
+    image: caapim/gateway
+    mem_limit: 6g
+    mem_swappiness: 0
+    memswap_limit: 6g
+    ports: 
+      - "8084:8080"
+      - "8443:8443"
+      - "9443:9443"
+    volumes: 
+      - /opt/SecureSpan/Gateway/node/default/etc/bootstrap/services/restman
+  mysql-server: 
+    command: 
+      - "--character-set-server=utf8"
+      - "--innodb_log_buffer_size=32M"
+      - "--innodb_log_file_size=80M"
+      - "--max_allowed_packet=50M"
+    environment: 
+      - MYSQL_DATABASE=ssg
+      - MYSQL_ROOT_PASSWORD=7layer
+    image: "mysql:5.7"
+    mem_limit: 1024m
+    ports: 
+      - "13306:3306"
+    volumes: 
+      - "/home/ec2-user/edgeGW/ssgdata:/var/lib/mysql"
+version: "2.2"
