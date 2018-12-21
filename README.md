@@ -14,6 +14,9 @@ c. To STOP and remove the container:
   1. docker-compose --project-name edgeGW down -v
 
 
-
 d. For healthcheck:
   1. watch docker ps to see all healthy contianers.
+  
+e. Volume folder is added to presist the changes, so that next time when you start the gateway all your policies/proxies, configurations, plug-ins are sustained. Make sure you have the relevant access for the same. 
+
+f. Extra host is added to accomodate any additional external integrations, like SSO, Portal, AdvAuth or APM.  
